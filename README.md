@@ -2,4 +2,4 @@
 
 This is my second Angular App. 
 
-[Demo](https://danny-liste-heures.firebaseapp.com/home)
+[Demo](https://danny-liste-heures.firebaseapp.com)
