@@ -1,0 +1,152 @@
+<div class="create-list-container">
+  <div *ngIf="EditEnabled">
+    <div class="alert alert-danger" role="alert">
+      Le mode Edit des jours est activé !
+      <br>
+      Cette fonctionnalité n'est pas fini.
+    </div>
+  </div>
+  <button mat-raised-button style="float: right;" (click)="enableEditHere()">
+    Edit Beta
+  </button>
+  <h2 [hidden]="DayAdded">
+    Création d'une liste
+  </h2>
+  <form [formGroup]="listForm" (ngSubmit)="onSubmit()">
+    <!-- Mois Form -->
+    <section class="sectionMonthResidency">
+      <article [hidden]="DayAdded" class="articleMonthResidency">
+        <h3>Mois:</h3>
+        <!-- pour faire le lien du listForm du parent avec le child -->
+        <app-date-selector (dateChange)='patchDate($event);'></app-date-selector>
+      </article>
+
+      <!-- Résidence Form-->
+      <article [hidden]="DayAdded" class="articleMonthResidency">
+        <h3>Résidence:</h3>
+        <article class="residenceOption">
+          <mat-radio-group *ngFor="let residency of residencyList" formControlName="residency">
+            <mat-radio-button class="residence-option" [value]="residency"
+              [checked]="listForm.value.residency === residency">
+              {{residency}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </article>
+      </article>
+    </section>
+
+    <!-- Jours Form -->
+    <section [hidden]="!DayAdded">
+      <div class="text">
+
+        <h3>
+          Préstations efféctuées par la femme de charge <strong>Mme JESUS PINTO DE BARROS Ilda</strong> au cours du
+          mois
+          de {{listForm.value.month}} {{listForm.value.year}}
+        </h3>
+      </div>
+      <div class="dayContainer" formArrayName="days">
+        <div class="row singleDayContainer" *ngFor="let dayControl of getControls(); let i = index" [formGroupName]="i"
+          #index>
+          <!-- Choisir jour -->
+          <div class="col">
+            <h4>Jour</h4>
+            <mat-form-field [hidden]="dayChangeStatus[i].dayPicker">
+              <input matInput [matDatepicker]="picker" placeholder="Quelle jour" [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="startDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker startView="month" [startAt]="startDate" (closed)="dayGotSelected(i)">
+              </mat-datepicker>
+            </mat-form-field>
+            <div>
+              <label
+                [hidden]="!dayChangeStatus[i].dayPicker">{{Temporary[i].day}}/{{numericMonth}}/{{listForm.value.year}}
+              </label>
+            </div>
+          </div>
+          <!-- hourIn -->
+          <div class="col">
+            <h4>Heures d'Arrivée</h4>
+            <ngb-timepicker [hidden]="dayChangeStatus[i].hourInPicker" class="center"
+              [ngModelOptions]="{standalone: true}" [(ngModel)]="timeIn" [seconds]="false" [hourStep]="hourStep"
+              [minuteStep]="minuteStep" (ngModelChange)="timeInChanged(i)">
+            </ngb-timepicker>
+            <input hidden type=" text" value="{{Temporary[i].hourIn}}" formControlName="hourIn">
+            <label [hidden]="!dayChangeStatus[i].hourInPicker">
+              {{Temporary[i].hourIn}}
+            </label>
+          </div>
+          <!-- hourOut -->
+          <div class=" col">
+            <h4>Heures de Sortie</h4>
+            <ngb-timepicker [hidden]="dayChangeStatus[i].hourInPicker" class="center"
+              [ngModelOptions]="{standalone: true}" [(ngModel)]="timeOut" [seconds]="false" [hourStep]="hourStep"
+              [minuteStep]="minuteStep" (ngModelChange)="timeOutChanged(i)"></ngb-timepicker>
+            <input hidden type="text" value="{{Temporary[i].hourOut}}" formControlName="hourOut">
+            <label [hidden]="!dayChangeStatus[i].hourOutPicker">
+              {{Temporary[i].hourOut}}
+            </label>
+          </div>
+          <!-- Total Jour -->
+          <div class="col">
+            <h4>TotalJour</h4>
+            <input hidden class="inputHourDay" type="text" value="{{timeTotal}}" formControlName="hourDay">
+            <label [hidden]="dayChangeStatus[i].hourDay">
+              {{timeTotal}}
+            </label>
+            <label [hidden]="!dayChangeStatus[i].hourDay">
+              {{Temporary[i].hourDay}}
+            </label>
+          </div>
+          <div id="deleteContainer">
+            <a (click)="editDay(i)" id="circleEdit" class="circleStyle" *ngIf="EditEnabled">
+              <i class="material-icons">
+                edit
+              </i>
+            </a>
+            <a (click)="saveEditDay(i)" id="circleSave" class="circleStyle" *ngIf="EditEnabled">
+              <i class="material-icons">
+                save
+              </i>
+            </a>
+            <a (click)="onDelete(i)" id="circleDelete" class="circleStyle">
+              <i class="material-icons">
+                delete_forever
+              </i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Total Mois -->
+    <div class="row totalJour" [hidden]="!HourMonthStr">
+      <div class="col">
+        <label>Total:</label>
+      </div>
+      <div class="col"></div>
+      <div class="col"></div>
+      <div class="col">
+        {{HourMonthStr}}
+      </div>
+    </div>
+
+    <section class="sectionButtons">
+      <button [hidden]="Send" type="button" mat-raised-button color="accent" (click)="onAddDay()">Ajouter Jour</button>
+
+      <button [hidden]="countDays < 2" [disabled]="Send" mat-raised-button color="primary" type="submit">
+        {{Send? 'Sauvegardé': 'Sauvegarder'}}
+      </button>
+    </section>
+  </form>
+  <section class="sectionButtons">
+    <button [hidden]="!Send" mat-raised-button color="accent" (click)="sendToServer()">
+      Envoyer au Serveur
+    </button>
+  </section>
+
+  <div style="max-width: 50%;margin: auto;" *ngIf="DataSaved">
+    <div style="text-align: center;" class="alert alert-success" role="alert">
+      Vos données ont bien été enregistré.
+    </div>
+  </div>
+</div>

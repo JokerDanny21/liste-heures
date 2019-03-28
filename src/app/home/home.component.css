@@ -1,0 +1,12 @@
+.imgbox {
+  margin-top: 3rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #673ab7;
+}
+
+.center-fit {
+  margin-top: 3rem;
+}

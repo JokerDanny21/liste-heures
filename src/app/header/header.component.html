@@ -1,0 +1,40 @@
+<div class="example-container">
+  <mat-toolbar class="example-toolbar" color='primary'>
+    <mat-icon (click)="isExpanded = !isExpanded" *ngIf="isExpanded">keyboard_arrow_left</mat-icon>
+    <mat-icon (click)="isExpanded = !isExpanded" *ngIf="!isExpanded">keyboard_arrow_right</mat-icon>
+    <span style="cursor: pointer;" class="example-fill-remaining-space" routerLink='home'>Liste des heures</span>
+    <mat-icon hidden>logout</mat-icon>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="example-sidenav-container" autosize>
+    <mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true">
+      <mat-nav-list class="dashboard">
+        <a mat-list-item hidden>
+          <mat-icon mat-list-icon>account_box</mat-icon>
+          <p matLine *ngIf="isExpanded">Name</p>
+        </a>
+
+        <mat-divider hidden></mat-divider>
+
+        <a mat-list-item (click)="toggleActive($event)" routerLink='new'>
+          <mat-icon mat-list-icon>create</mat-icon>
+          <p matLine *ngIf="isExpanded">Créer</p>
+        </a>
+        <!-- <a mat-list-item routerLink='list' routerLinkActive="active"> -->
+        <a mat-list-item (click)="toggleActive($event)" routerLink='list'>
+          <mat-icon mat-list-icon>folder_open</mat-icon>
+          <p matLine *ngIf="isExpanded">Ouvrir</p>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <div class="example-sidenav-content" id="scrollThis">
+      <router-outlet></router-outlet>
+    </div>
+
+  </mat-sidenav-container>
+</div>
+
+<!-- Copyright 2017 Google Inc. All Rights Reserved.
+  Use of this source code is governed by an MIT-style license that
+  can be found in the LICENSE file at http://angular.io/license -->

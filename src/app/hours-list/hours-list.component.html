@@ -1,0 +1,15 @@
+<section id="scrollHere">
+  <div *ngIf="WasListEditDeleted()">
+
+    <div class="alert alert-danger" role="alert">
+      Une ou plusieurs listes ont été effacées !
+      <br>
+      Appuyer sur "Envoyer au Serveur" pour sauvegarder les changements.
+    </div>
+    <button mat-raised-button color="accent" (click)="sendToServer()">
+      Envoyer au Serveur
+    </button>
+  </div>
+</section>
+<app-list-detail *ngFor="let hlElement of hourLists;let i =index" [hourList]="hlElement" [index]="i">
+</app-list-detail>

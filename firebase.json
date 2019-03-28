@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "dist/liste-heures",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

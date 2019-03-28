@@ -1,0 +1,66 @@
+<!-- Mois  -->
+<h2>{{hourList.residency}} - {{hourList.month}} {{hourList.year}}</h2>
+<mat-icon (click)="collapse(index)" *ngIf="isExpanded">keyboard_arrow_up</mat-icon>
+<mat-icon (click)="collapse(index)" *ngIf="!isExpanded">keyboard_arrow_down</mat-icon>
+<div id="collapseMe{{index}}" class="active">
+  <div id="deleteContainer">
+    <a (click)="onDelete(index)" id="circleDelete">
+      <i class="material-icons">
+        delete_forever
+      </i>
+    </a>
+    <a (click)="captureScreen(index)" id="circlePrint">
+      <i class="material-icons">
+        print
+      </i>
+    </a>
+  </div>
+  <div id="contentToConvert{{index}}" class="listContainer">
+    <div id="residenceContainer" *ngIf="hourList.residency=='Centre'">
+      <p>RESIDENCE DU CENTRE</p>
+      <p>18-24, Grande-Rue</p>
+      <p>L-4575 DIFFERDANGE</p>
+    </div>
+    <div id="residenceContainer" *ngIf="hourList.residency=='Grey'">
+      <p>RESIDENCE H. GREY</p>
+      <p>2A, Rue de l'Acier</p>
+      <p>L-4505 NIEDERCORN</p>
+    </div>
+    <div id="residenceContainer" *ngIf="hourList.residency=='Woiwer'">
+      <p>RESIDENCE WOIWER</p>
+      <p>120, Rue Woiwer</p>
+      <p>L-4687 DIFFERDANGE</p>
+    </div>
+    <h3>
+      Préstations efféctuées par la femme de charge <strong>Mme JESUS PINTO DE BARROS Ilda</strong> au cours du
+      mois
+      de {{hourList.month}} {{hourList.year}}
+    </h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Jour</th>
+          <th scope="col">Heures d'Arrivée</th>
+          <th scope="col">Heures de Sortie</th>
+          <th scope="col">TotalJour</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of hourList.days;let i =index">
+          <td scope="row">{{item.day}}/{{monthNameToNum(hourList.month)}}/{{hourList.year}}</td>
+          <td>{{item.hourIn}}</td>
+          <td>{{item.hourOut}}</td>
+          <td>{{item.hourDay}}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="col">Total</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col">{{HourMonthStr}}</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
