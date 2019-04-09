@@ -52,7 +52,7 @@
           <div class="col">
             <h4>Jour</h4>
             <mat-form-field [hidden]="dayChangeStatus[i].dayPicker">
-              <input matInput [matDatepicker]="picker" placeholder="Quelle jour" [ngModelOptions]="{standalone: true}"
+              <input matInput [matDatepicker]="picker" placeholder="Quel jour" [ngModelOptions]="{standalone: true}"
                 [(ngModel)]="startDate">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker startView="month" [startAt]="startDate" (closed)="dayGotSelected(i)">
